@@ -107,7 +107,8 @@ public class UserAction extends BaseAction {
     public String getUserState() throws Exception{
         PrintWriter out = response().getWriter();
         HttpSession session=request().getSession();
-        if (session.getAttribute("userid").toString().equals("-1")){
+        Object o=session.getAttribute("userid");
+        if (o==null || session.getAttribute("userid").toString().equals("-1")){
             ArrayList<String> ur=new ArrayList<String>();
             ur.add("-1");
             out.println(JSONArray.fromObject(ur));

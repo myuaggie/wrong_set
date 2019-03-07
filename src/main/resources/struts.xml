@@ -92,5 +92,11 @@
         <action name="queryCountTags" class="action.CountAction" method="queryCountTags">
 
         </action>
+        <action name="getTopKSaleLibraries" class="action.BuyAction" method="getTopKSaleLibraries">
+
+        </action>
+        <action name="buyLibrary" class="action.BuyAction" method="buyLibrary">
+
+        </action>
     </package>
 </struts>

@@ -1,6 +1,7 @@
 
 import React  from 'react'
 import CommonSet from './commonTable'
+import BuySet from './buyTable'
 import Detail from'./detail'
 import ReactQuill from 'react-quill'
 import { hashHistory } from 'react-router'
@@ -55,6 +56,7 @@ var Wrong=React.createClass(
                 common:false,
                 detailCom:false,
                 addText:null,
+                buy:false,
             };
         },
 
@@ -83,7 +85,8 @@ var Wrong=React.createClass(
                     data:temp,
                     detail:false,
                     self:true,
-                    common:false
+                    common:false,
+                    buy:false,
                 });
 
             }.bind(this));
@@ -93,9 +96,19 @@ var Wrong=React.createClass(
             this.setState({
                 detail:false,
                 self:false,
-                common:true
+                common:true,
+                buy:false,
             });
 
+        },
+
+        queryBuyQuestion: function(){
+            this.setState({
+                detail:false,
+                self:false,
+                common:false,
+                buy:true,
+            });
         },
 
         sortTuple:function(e){
@@ -435,9 +448,9 @@ var Wrong=React.createClass(
             pop.style.display="block";
         },
 
-
-
-
+        buy:function(){
+          console.log("do nothing");
+        },
 
         render: function() {
             return (
@@ -550,6 +563,7 @@ var Wrong=React.createClass(
                     <div className="Toolbar">
                         <button onClick={this.queryManQuestion}>Popular Wrong Set</button>
                         <button onClick={this.queryQuestion}>My Wrong Set</button>
+                        <button onClick={this.queryBuyQuestion}>Buy Wrong Set</button>
                     </div>
                     {this.renderLogin()}
                 </div>
@@ -580,6 +594,9 @@ var Wrong=React.createClass(
                 {return (<p id="loginHint">please log in</p>);}
                 else if (this.state.common){
                     return (<CommonSet/>)
+                }
+                else if(this.state.buy){
+                    return <BuySet buyFunc={this.buy} login={false}/>
                 }
         },
 
