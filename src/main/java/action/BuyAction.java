@@ -69,6 +69,11 @@ public class BuyAction extends BaseAction{
         if (o!=null) {
             int owner = Integer.parseInt(o.toString());
             if (owner != -1) {
+                int role=Integer.parseInt(request().getSession()
+                        .getAttribute("valid").toString());
+                if (role==2){
+                    owner=111111;
+                }
                 List<UQ_Library> list_lib = appService.getAllLibrariesById(owner);
                 Iterator it = list_lib.iterator();
                 while (it.hasNext()) {
@@ -121,6 +126,11 @@ public class BuyAction extends BaseAction{
 
         int owner=Integer.parseInt(request().getSession()
                 .getAttribute("userid").toString());
+        int role=Integer.parseInt(request().getSession()
+                .getAttribute("valid").toString());
+        if (role==2){
+            owner=111111;
+        }
         User u=appService.getUserById(owner);
 
         int lid=libraryId;

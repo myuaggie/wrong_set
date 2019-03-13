@@ -24,12 +24,14 @@ let Manager = React.createClass({
           hashHistory.push("/countTags");
       }
     },
+    handleBuy:function(){
+        hashHistory.push("/buyExternalLibraries");
+    },
     logout:function() {
         this.serverRequest4=$.get('logout',{
             credentials: 'include'},function(data){
             hashHistory.push("/wrongset");
         }.bind(this));
-
     },
     render: function () {
         return (
@@ -56,6 +58,10 @@ let Manager = React.createClass({
                         <option value="countTags">view tags</option>
                     </select>
                     <button className="Toolbar" id="statisticsBtn" onClick={this.handleSelect}>-></button>
+                </div>
+                <div >
+                    <p id="buyLibraries">buy external libraries</p>
+                    <button className="Toolbar" id="buyLibrariesBtn" onClick={this.handleBuy}>-></button>
                 </div>
             </div>
         )

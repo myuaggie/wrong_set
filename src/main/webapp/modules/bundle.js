@@ -98,6 +98,10 @@
 
 	var _countTags2 = _interopRequireDefault(_countTags);
 
+	var _manageExternalTable = __webpack_require__(370);
+
+	var _manageExternalTable2 = _interopRequireDefault(_manageExternalTable);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _reactDom.render)(_react2.default.createElement(
@@ -113,7 +117,8 @@
 	    _react2.default.createElement(_reactRouter.Route, { path: '/countAll', component: _countAll2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/countByUser', component: _countByUser2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/countFre', component: _countFre2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/countTags', component: _countTags2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: '/countTags', component: _countTags2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/buyExternalLibraries', component: _manageExternalTable2.default })
 	), document.getElementById('app'));
 
 /***/ },
@@ -20667,7 +20672,17 @@
 	    _showDetail: function _showDetail(e) {
 	        var id = parseInt(e.target.id.substring(1));
 	        //alert(id);
-	        this.setState({ detail: true, detailData: id + this.state.page * 10 });
+	        var tagtwo = this.state.data[id + this.state.page * 10][2];
+	        this.serverRequest23 = $.post("checkDetailPremission", { tagTwo: tagtwo, credentials: 'include' }, function (data) {
+	            console.log(data);
+	            if (data === "1\n") {
+	                this.setState({ detail: true, detailData: id + this.state.page * 10 });
+	            } else if (data === "-1\n") {
+	                alert("vip only");
+	            } else {
+	                alert("please login");
+	            }
+	        }.bind(this));
 	    },
 
 	    _back: function _back(e) {
@@ -46354,6 +46369,14 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function getJsonLength(jsonData) {
+	    var jsonLength = 0;
+	    for (var item in jsonData) {
+	        jsonLength++;
+	    }
+	    return jsonLength;
+	}
+
 	var ManageSet = _react2.default.createClass({
 	    displayName: 'ManageSet',
 
@@ -46371,7 +46394,8 @@
 	            showRef: false,
 	            myData: null,
 	            pop: null,
-	            delete: false
+	            delete: false,
+	            page: 0
 	        };
 	    },
 
@@ -46695,6 +46719,107 @@
 	        var c = document.getElementById("detailContent");
 	        c.innerHTML = this.state.data[this.state.detailData][7];
 	    },
+	    goLastPage: function goLastPage() {
+	        var pagenow = this.state.page - 1;
+	        var len = getJsonLength(this.state.data);
+	        var temp = [];
+	        for (var i = pagenow * 10; i < len && i < pagenow * 10 + 10; i++) {
+	            temp.push(this.state.data[i]);
+	        }
+	        this.setState({ pageData: temp,
+	            page: pagenow });
+	    },
+
+	    goNextPage: function goNextPage() {
+	        var pagenow = this.state.page + 1;
+	        var len = getJsonLength(this.state.data);
+	        var temp = [];
+	        for (var i = pagenow * 10; i < len && i < pagenow * 10 + 10; i++) {
+	            temp.push(this.state.data[i]);
+	        }
+	        this.setState({ pageData: temp,
+	            page: pagenow });
+	    },
+
+	    _renderPageBtn: function _renderPageBtn() {
+	        if (this.state.data == null) {
+	            return _react2.default.createElement(
+	                'p',
+	                null,
+	                _react2.default.createElement(
+	                    'button',
+	                    { id: 'recordbackbtn', onClick: this.goLastPage, disabled: true },
+	                    'last page'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.goNextPage, disabled: true },
+	                    'next page'
+	                )
+	            );
+	        }
+	        if (this.state.page > 0 && this.state.page < getJsonLength(this.state.data) / 10 - 1) {
+	            return _react2.default.createElement(
+	                'p',
+	                null,
+	                _react2.default.createElement(
+	                    'button',
+	                    { id: 'recordbackbtn', onClick: this.goLastPage },
+	                    'last page'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.goNextPage },
+	                    'next page'
+	                )
+	            );
+	        } else if (this.state.page > 0) {
+	            return _react2.default.createElement(
+	                'p',
+	                null,
+	                _react2.default.createElement(
+	                    'button',
+	                    { id: 'recordbackbtn', onClick: this.goLastPage },
+	                    'last page'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.goNextPage, disabled: true },
+	                    'next page'
+	                )
+	            );
+	        } else if (this.state.page < getJsonLength(this.state.data) / 10 - 1) {
+	            return _react2.default.createElement(
+	                'p',
+	                null,
+	                _react2.default.createElement(
+	                    'button',
+	                    { id: 'recordbackbtn', onClick: this.goLastPage, disabled: true },
+	                    'last page'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.goNextPage },
+	                    'next page'
+	                )
+	            );
+	        } else {
+	            return _react2.default.createElement(
+	                'p',
+	                null,
+	                _react2.default.createElement(
+	                    'button',
+	                    { id: 'recordbackbtn', onClick: this.goLastPage, disabled: true },
+	                    'last page'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.goNextPage, disabled: true },
+	                    'next page'
+	                )
+	            );
+	        }
+	    },
 
 	    _renderTable: function _renderTable() {
 	        if (this.state.detail === true) {
@@ -46792,7 +46917,7 @@
 	                        null,
 	                        this._renderSearch(),
 	                        this.state.data.map(function (row, rowidx) {
-	                            return _react2.default.createElement(
+	                            if (rowidx >= this.state.page * 10 && rowidx < this.state.page * 10 + 10) return _react2.default.createElement(
 	                                'tr',
 	                                { key: rowidx },
 	                                row.map(function (cell, idx) {
@@ -46848,7 +46973,8 @@
 	                            );
 	                        }, this)
 	                    )
-	                )
+	                ),
+	                this._renderPageBtn()
 	            );
 	        } else {
 	            return _react2.default.createElement(
@@ -46899,6 +47025,9 @@
 	        } else {
 	            _reactRouter.hashHistory.push("/countTags");
 	        }
+	    },
+	    handleBuy: function handleBuy() {
+	        _reactRouter.hashHistory.push("/buyExternalLibraries");
 	    },
 	    logout: function logout() {
 	        this.serverRequest4 = $.get('logout', {
@@ -46986,6 +47115,20 @@
 	                _react2.default.createElement(
 	                    'button',
 	                    { className: 'Toolbar', id: 'statisticsBtn', onClick: this.handleSelect },
+	                    '->'
+	                )
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'p',
+	                    { id: 'buyLibraries' },
+	                    'buy external libraries'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { className: 'Toolbar', id: 'buyLibrariesBtn', onClick: this.handleBuy },
 	                    '->'
 	                )
 	            )
@@ -47987,6 +48130,82 @@
 	});
 
 	exports.default = CountTags;
+
+/***/ },
+/* 370 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _buyTable = __webpack_require__(161);
+
+	var _buyTable2 = _interopRequireDefault(_buyTable);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(304);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ManageExternal = _react2.default.createClass({
+	    displayName: 'ManageExternal',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            data: null
+	        };
+	    },
+
+	    componentWillMount: function componentWillMount() {
+	        this.serverRequest21 = $.get('queryCommonLibraries', {
+	            credentials: 'include' }, function (data) {
+	            var temp = JSON.parse(data);
+	            this.setState({
+	                data: temp
+	            });
+	        }.bind(this));
+	    },
+
+	    back: function back() {
+	        _reactRouter.hashHistory.push({
+	            pathname: '/wrongset'
+	        });
+	    },
+
+	    buy: function buy(id) {
+	        console.log("get id:", id);
+
+	        var info = {
+	            id: id,
+	            libraryId: parseInt(this.state.data[this.state.data.length - 1][0]) + 1,
+	            credentials: 'include'
+	        };
+	        this.serverRequest51 = $.post('buyLibrary', info, function (data) {
+	            alert('done');
+	        }.bind(this));
+	    },
+
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                'button',
+	                { id: 'recordbackbtn', onClick: this.back },
+	                'back'
+	            ),
+	            _react2.default.createElement(_buyTable2.default, { buyFunc: this.buy, login: true })
+	        );
+	    }
+	});
+
+	exports.default = ManageExternal;
 
 /***/ }
 /******/ ]);

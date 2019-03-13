@@ -69,6 +69,9 @@
         <action name="deletePop" class="action.LibraryAction" method="deletePop">
 
         </action>
+        <action name="checkDetailPremission" class="action.LibraryAction" method="checkDetailPremission">
+
+        </action>
 
         <action name="queryRecords" class="action.RecordAction" method="queryRecords">
 

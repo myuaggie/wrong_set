@@ -1,6 +1,8 @@
 package action;
 
 import com.mongodb.*;
+import login.QueryDetailAction;
+import login.SimpleCallbackHandler;
 import model.Question;
 import model.ULKey;
 import model.UQ_Library;
@@ -8,7 +10,12 @@ import model.User;
 import net.sf.json.JSONArray;
 import service.AppService;
 
+import javax.security.auth.Subject;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
 import java.io.PrintWriter;
+import java.security.Principal;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -330,6 +337,7 @@ public class LibraryAction extends BaseAction {
         UQ_Library l=appService.getLibraryByKey(new ULKey(owner,libraryId));
         ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add(l.getQuestion().getName());
+
         MongoClient mongoClient = new MongoClient();
         DB database = mongoClient.getDB("wrong_set");
         DBCollection collection = database.getCollection("questions");
@@ -352,5 +360,73 @@ public class LibraryAction extends BaseAction {
         return null;
     }
 
+    public String checkDetailPremission() throws Exception{
+        PrintWriter out = response().getWriter();
+        Object o= request().getSession().getAttribute("userid");
+        String owner,pwd;
+
+        if (o==null){
+            out.println("0");
+            out.flush();
+            out.close();
+            return null;
+        }
+        else {owner=o.toString();}
+        if (owner.equals("-1")){
+            out.println("0");
+            out.flush();
+            out.close();
+            return null;
+        }
+        //pwd=request().getSession().getAttribute("password").toString();
+        else {
+            String role=request().getSession().getAttribute("valid").toString();
+            if (this.tagTwo.contains("external")) {
+                if (role.equals("2")) {
+                    out.println("1");
+                } else {
+                    out.println("-1");
+                }
+            }
+            else {
+                out.println("1");
+            }
+        }
+
+//        try {
+//            System.setProperty("java.security.auth.login.config", "classes/jaas.config");
+//            System.setProperty("java.security.policy", "classes/simple.policy");
+//            System.setSecurityManager(new SecurityManager());
+//            LoginContext context = new LoginContext("Login1",new SimpleCallbackHandler(owner,pwd.toCharArray()));
+//            context.login();
+//            System.out.println("Authentication successful.");
+//            Subject subject = context.getSubject();
+//            Iterator principalIterator = subject.getPrincipals().iterator();
+//            System.out.println("Authenticated user has the following Principals:");
+//            while (principalIterator.hasNext()) {
+//                Principal p = (Principal)principalIterator.next();
+//                System.out.println("\t" + p.toString());
+//            }
+//
+//            System.out.println("User has " +
+//                    subject.getPublicCredentials().size() +
+//                    " Public Credential(s)");
+//
+//            PrivilegedAction action = new QueryDetailAction(this.tagTwo);
+//            Subject.doAsPrivileged(subject, action, null);
+//            context.logout();
+//            out.println("1");
+//        }
+//        catch (LoginException e) {
+//            out.println("-1");
+//            out.flush();
+//            out.close();
+//            return null;
+//        }
+
+        out.flush();
+        out.close();
+        return null;
+    }
 
 }

@@ -94,7 +94,20 @@ var CommonSet = React.createClass({
     _showDetail: function(e){
         var id=parseInt(e.target.id.substring(1));
         //alert(id);
-        this.setState({detail:true,detailData:id+this.state.page*10});
+        let tagtwo=this.state.data[id+this.state.page*10][2];
+        this.serverRequest23=$.post("checkDetailPremission",{tagTwo:tagtwo,credentials: 'include'},function(data){
+            console.log(data);
+            if (data==="1\n"){
+                this.setState({detail:true,detailData:id+this.state.page*10});
+            }
+            else if (data==="-1\n"){
+                alert("vip only");
+            }
+            else {
+                alert("please login");
+            }
+        }.bind(this));
+
     },
 
     _back: function(e){

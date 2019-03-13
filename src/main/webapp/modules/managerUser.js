@@ -255,6 +255,6 @@ let ManageUser=React.createClass({
             </div>
         );
     },
-})
+});
 
 export default ManageUser;

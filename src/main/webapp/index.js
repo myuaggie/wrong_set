@@ -13,6 +13,7 @@ import CountAll from "./modules/countAll"
 import CountByUser from "./modules/countByUser"
 import CountFre from "./modules/countFre"
 import CountTags from "./modules/countTags"
+import ManageExternal from "./modules/manageExternalTable";
 render((
     <Router history={hashHistory}>
         <Route path="/" component={App}/>
@@ -25,6 +26,7 @@ render((
         <Route path="/countAll" component={CountAll}/>
         <Route path="/countByUser" component={CountByUser}/>
         <Route path="/countFre" component={CountFre}/>
-            <Route path="/countTags" component={CountTags}/>
+        <Route path="/countTags" component={CountTags}/>
+        <Route path="/buyExternalLibraries" component={ManageExternal}/>
     </Router>
-), document.getElementById('app'))
+), document.getElementById('app'));

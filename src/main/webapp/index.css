@@ -46,7 +46,7 @@ th {
     color:#2589bf;
 }
 
-#manageCommon,#manageUsers,#statistics,#countAll{
+#manageCommon,#manageUsers,#statistics,#countAll,#buyLibraries{
     font-family:Georgia;
     color: rgba(155, 93, 129, 0.85);
     font-size: xx-large;
@@ -119,7 +119,7 @@ th {
     text-decoration: none;
 }
 
-#manageCommonBtn,#manageUsersBtn,#statisticsBtn,#statisticsSelect{
+#manageCommonBtn,#manageUsersBtn,#statisticsBtn,#statisticsSelect,#buyLibrariesBtn{
     margin-left:40px;
 }
 

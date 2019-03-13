@@ -72,6 +72,7 @@ public class UserAction extends BaseAction {
                 HttpSession session=request().getSession();
                 session.setAttribute("userid",user.getId());
                 session.setAttribute("username",user.getUsername());
+                session.setAttribute("password",user.getPassword());
                 session.setAttribute("phone",user.getPhone());
                 session.setAttribute("email", user.getEmail());
                 session.setAttribute("valid", user.getValid());
