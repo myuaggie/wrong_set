@@ -17,6 +17,10 @@
 		p:password="tvvt14005" p:maxPoolSize="40" p:minPoolSize="1"
 		p:initialPoolSize="1" p:maxIdleTime="20"  />
 
+    <bean id="wrongSetTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+        p:dataSource-ref="dataSource" />
+    <tx:annotation-driven transaction-manager="wrongSetTransactionManager" />
+
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
 		p:dataSource-ref="dataSource">

@@ -17,6 +17,10 @@ public class CountAction extends BaseAction{
 
     private AppService appService;
 
+    public void setAppService(AppService appService){
+        this.appService=appService;
+    }
+
     public String queryCountAll() throws Exception{
         PrintWriter out = response().getWriter();
         out.println(appService.getAllQuestions().size());

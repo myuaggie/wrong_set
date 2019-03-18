@@ -206,10 +206,10 @@ let ManageUser=React.createClass({
                                         }
                                     }
                                     if (idx===4){
-                                        if (content==="true"){
+                                        if (content==="1"){
                                             return <td><button id={"tdv"+rowidx.toString()} onClick={this.invalidUser}>invalid</button></td>
                                         }
-                                        else{
+                                        else if (content==="0"){
                                             return <td><button id={"tdv"+rowidx.toString()} onClick={this.validUser}>valid</button></td>
                                         }
                                     }

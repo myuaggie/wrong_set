@@ -47405,7 +47405,7 @@
 	                                    }
 	                                }
 	                                if (idx === 4) {
-	                                    if (content === "true") {
+	                                    if (content === "1") {
 	                                        return _react2.default.createElement(
 	                                            'td',
 	                                            null,
@@ -47415,7 +47415,7 @@
 	                                                'invalid'
 	                                            )
 	                                        );
-	                                    } else {
+	                                    } else if (content === "0") {
 	                                        return _react2.default.createElement(
 	                                            'td',
 	                                            null,
