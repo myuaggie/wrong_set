@@ -17,6 +17,10 @@
 	<filter>
 		<filter-name>OpenSessionInViewFilter</filter-name>
 		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+		<init-param>
+			<param-name>excludedPages</param-name>
+			<param-value>/websocketbot</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>OpenSessionInViewFilter</filter-name>
@@ -26,7 +30,10 @@
 	<filter>
 		<filter-name>struts2</filter-name>
 		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
-
+		<init-param>
+			<param-name>excludedPages</param-name>
+			<param-value>/websocketbot</param-value>
+		</init-param>
 	</filter>
 
 	<filter-mapping>

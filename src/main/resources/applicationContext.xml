@@ -40,6 +40,7 @@
 				hibernate.show_sql=true
 				hibernate.format_sql=true
 				hibernate.enable_lazy_load_no_trans=true
+                javax.persistence.validation.mode=none
 			</value>
 		</property>
 	</bean>
@@ -66,6 +67,10 @@
 		<property name="libraryDao" ref="libraryDao"/>
 		<property name="recordDao" ref="recordDao"/>
 	</bean>
+
+    <bean id="buyLogProducer" class="message.BuyLogProducer">
+
+    </bean>
 
 	<!-- HibernateTransactionManager -->
 	<bean id="transactionManager"

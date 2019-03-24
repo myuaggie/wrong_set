@@ -1,5 +1,5 @@
 import React, { Component }  from 'react'
-
+import ChatRoom from "./chatroom"
 function getJsonLength(jsonData){
     var jsonLength = 0;
     for(var item in jsonData){
@@ -303,6 +303,7 @@ var CommonSet = React.createClass({
                     </tbody>
                 </table>
                 {this._renderPageBtn()}
+                <ChatRoom/>
             </div>
         );
         }

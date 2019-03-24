@@ -1,6 +1,7 @@
 package action;
 
 import com.mongodb.*;
+import message.BuyLogProducer;
 import model.Question;
 import model.ULKey;
 import model.UQ_Library;
@@ -22,6 +23,7 @@ public class BuyAction extends BaseAction{
     private static final long serialVersionUID = 1L;
 
     private AppService appService;
+    private BuyLogProducer buyLogProducer;
 
     private int libraryId;
     private int k;
@@ -31,6 +33,8 @@ public class BuyAction extends BaseAction{
     public void setAppService(AppService appService){
         this.appService=appService;
     }
+
+    public void setBuyLogProducer(BuyLogProducer buyLogProducer) {this.buyLogProducer=buyLogProducer;}
 
     public int getLibraryId() {
         return libraryId;
@@ -160,6 +164,7 @@ public class BuyAction extends BaseAction{
         }
         database=null;
         mongoClient.close();
+        buyLogProducer.produce(owner,id);
         return null;
     }
 }

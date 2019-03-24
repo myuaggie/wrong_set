@@ -46,13 +46,17 @@ th {
     color:#2589bf;
 }
 
-#manageCommon,#manageUsers,#statistics,#countAll,#buyLibraries{
+#manageCommon,#manageUsers,#statistics,#countAll,#buyLibraries,#chatroom-title{
     font-family:Georgia;
     color: rgba(155, 93, 129, 0.85);
     font-size: xx-large;
     margin-left:40px;
 }
 
+#chatroom {
+    margin-top: 20px;
+    margin-left: 20px;
+}
 
 .Toolbar {
     margin-left: 20px;
