@@ -1,8 +1,12 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class UQ_Library {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class UQ_Library implements Serializable {
     private ULKey ulKey;
     private Question question;
     private String tagOne;

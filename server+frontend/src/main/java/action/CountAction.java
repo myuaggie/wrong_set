@@ -6,7 +6,6 @@ import model.User;
 import net.sf.json.JSONArray;
 import service.AppService;
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;

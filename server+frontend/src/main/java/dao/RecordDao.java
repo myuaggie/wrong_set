@@ -1,7 +1,7 @@
 package dao;
 
-import model.URKey;
 import model.Record;
+import model.URKey;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
@@ -16,7 +16,7 @@ public interface RecordDao {
 
     public Record getRecordByKey(URKey key);
 
-    public List<Record> getAllRecords(int userId,int libraryId);
+    public List<Record> getAllRecords(int userId, int libraryId);
 
     public Blob convertBlob(String ans) throws UnsupportedEncodingException;
 }

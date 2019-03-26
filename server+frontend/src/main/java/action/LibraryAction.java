@@ -1,8 +1,6 @@
 package action;
 
 import com.mongodb.*;
-import login.QueryDetailAction;
-import login.SimpleCallbackHandler;
 import model.Question;
 import model.ULKey;
 import model.UQ_Library;
@@ -10,12 +8,7 @@ import model.User;
 import net.sf.json.JSONArray;
 import service.AppService;
 
-import javax.security.auth.Subject;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
 import java.io.PrintWriter;
-import java.security.Principal;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -105,6 +98,7 @@ public class LibraryAction extends BaseAction {
                 qJ.add(JSONArray.fromObject(arrayList));
             }
             JSONArray q=JSONArray.fromObject(qJ.toArray());
+
             out.println(q);
         }
         out.flush();

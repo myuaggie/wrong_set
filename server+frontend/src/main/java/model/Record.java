@@ -1,9 +1,13 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Date;
 
-public class Record {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Record implements Serializable {
     private URKey urKey;
     private Blob answer;
     private Date date;

@@ -1,6 +1,11 @@
 package model;
 
-public class User {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User implements Serializable {
     private int id;
     private String username;
     private String password;

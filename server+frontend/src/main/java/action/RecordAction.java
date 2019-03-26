@@ -7,7 +7,6 @@ import net.sf.json.JSONArray;
 import service.AppService;
 
 import java.io.PrintWriter;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;

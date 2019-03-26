@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Struts2 DTD -->
-<!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
-<struts>
+<?xml version="1.0" encoding="UTF-8"?>
 
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
     <constant name="struts.devMode" value="true" />
     <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
     <package name="process" extends="struts-default">
@@ -43,7 +43,7 @@
 
         </action>
         <action name="queryCommonLibraries" class="action.LibraryAction" method="queryCommonLibraries">
-            
+
         </action>
         <action name="addLibraries" class="action.LibraryAction" method="addLibraries">
 

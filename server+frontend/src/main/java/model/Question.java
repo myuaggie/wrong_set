@@ -1,6 +1,11 @@
 package model;
 
-public class Question {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Question implements Serializable {
     private int id;
     private String name;
     private String content;

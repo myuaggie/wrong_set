@@ -115,7 +115,7 @@ public class AppServiceImpl implements AppService {
         return recordDao.getRecordByKey(key);
     }
 
-    public List<Record> getAllRecords(int userId,int libraryId){
+    public List<Record> getAllRecords(int userId, int libraryId){
         return recordDao.getAllRecords(userId,libraryId);
     }
 

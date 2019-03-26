@@ -13,6 +13,7 @@
         <property name="password" column="password"/>
         <property name="email" column="email"/>
         <property name="phone" column="phone"/>
+        <property name="valid" column="valid"/>
     </class>
 
 </hibernate-mapping>
