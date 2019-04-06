@@ -23,16 +23,35 @@ function cleanTarget(str) {
     return cleanstr.substring(0,cleanstr.length-1);
 }
 
-var ChatRoom = React.createClass({
-    displayName: 'ChatRoom',
-    wsocket:null,
-    textarea:null,
-    wsconsole:null,
-    userlist:null,
-    userName:"",
+function existInJSON(jsonData, str){
+    let i=0;
+    let idx=str.indexOf(' ');
+    str=str.substring(0,idx);
+    for(let item in jsonData){
+        if (jsonData[i][1]===str) return true;
+        i++;
+    }
+    return false;
+}
 
-    componentWillMount:function() {
+var Chat = React.createClass({
+    displayName: 'Chat',
+    wsocket: null,
+    textarea: null,
 
+    getInitialState:function(){
+        return {
+            user:null,
+            userlist:[],
+            friends:[],
+        };
+    },
+
+    componentWillMount: function () {
+        this.setState({
+            user:this.props.user,
+            friends:this.props.friends,
+        })
     },
 
     componentDidMount:function(){
@@ -40,8 +59,6 @@ var ChatRoom = React.createClass({
         this.wsocket.onmessage=this.onMessage;
         this.wsocket.onopen=this.onOpen;
         this.textarea = document.getElementById("textarea");
-        this.userlist = document.getElementById("userlist");
-        document.getElementById("name").focus();
     },
 
     componentWillUnmount:function(){
@@ -68,40 +85,28 @@ var ChatRoom = React.createClass({
             /* Update the chat area */
             this.textarea.value += "" + line;
         } else if (msg.type === "users") {
-            line = "Users:\n";
-            for (var i=0; i < msg.userlist.length; i++)
-                line += "-" + msg.userlist[i] + "\n";
-            /* Update the user list area */
-            this.userlist.value = line;
+            this.setState({userlist:msg.userlist});
         }
         this.textarea.scrollTop = 999999;
     },
 
-    checkJoin:function(evt){
-        if (evt.keyCode === 13){
-            this.sendJoin();
-        }
-    },
-
     sendJoin:function(){
         var input = document.getElementById("input");
-        var name = document.getElementById("name");
+        var name = this.state.user[1]+" ["+this.state.user[0]+"]";
         var join = document.getElementById("join");
         var jsonstr;
-        if (name.value.length > 0) {
+        if (name.length > 0) {
             /* Create a message as a JavaScript object */
             var joinMsg = {};
             joinMsg.type = "join";
-            joinMsg.name = name.value;
+            joinMsg.name = name;
             /* Convert the message to JSON */
             jsonstr = JSON.stringify(joinMsg);
             /* Send the JSON text */
             this.wsocket.send(jsonstr);
             /* Disable join controls */
-            name.disabled = true;
             join.disabled = true;
-            input.disabled = false;
-            this.userName = name.value;
+            input.disabled=false;
         }
     },
 
@@ -113,7 +118,7 @@ var ChatRoom = React.createClass({
             /* Create a chat message as a JavaScript object */
             var chatMsg = {};
             chatMsg.type = "chat";
-            chatMsg.name = this.userName;
+            chatMsg.name = this.state.user[1]+" ["+this.state.user[0]+"]";
             msgstr = input.value;
             chatMsg.target = getTarget(msgstr.replace(/,/g, ""));
             chatMsg.message = cleanTarget(msgstr);
@@ -126,21 +131,52 @@ var ChatRoom = React.createClass({
         }
     },
 
+    addFriend:function(e){
+        var i=e.target.id;
+        var row=i.substring(i.indexOf("_")+1);
+        let idx=row.indexOf(' ');
+        let name=row.substring(0,idx);
+        let id=row.substring(idx+2,row.length-1);
+        let info={
+            id:id,
+            username:name,
+            credentials: 'include'
+        };
+        this.serverRequest2=$.post('addFriend',info,function(data){
+            this.serverRequest24=$.get('getFriends',{credentials: 'include'},function(data){
+                let fs=JSON.parse(data);
+                this.setState({
+                    friends:fs,
+                });
+                this.props.update(fs);
+                console.log(fs);
+            }.bind(this));
+        }.bind(this));
+    },
+
     render: function () {
         return (
             <div id="chatroom">
                 <h2 id="chatroom-title">Chat Room</h2>
-                Your name: <input id="name" type="text" size="20" onKeyDown={this.checkJoin}/>
                 <input type="submit" id="join" value="Join!" onClick={this.sendJoin}/><br/>
                 <textarea id="input" cols="70" rows="1" disabled="true"
                           onKeyUp={this.sendMessage}/><br/>
                 <textarea id="textarea" cols="70" rows="20" readOnly/>
-                <textarea id="userlist" cols="20" rows="20" readOnly/>
-                <br/><br/><br/>
+                <div id="userlist">
+                    {this.state.userlist.map(function(row, rowidx) {
+                        return (
+                            <div className="userpanel" id={"u"+rowidx.toString()} key={"u"+rowidx.toString()}>
+                                <span>{row}</span>
+                                {existInJSON(this.state.friends,row)||
+                                row.substring(0,row.indexOf(' '))===this.state.user[1]?
+                                    <span> </span>:<button id={"af_"+row} onClick={this.addFriend}>Add Friend</button>}
+                            </div>
+                        );
+                    }, this)}
+                </div>
             </div>
         )
     }
 });
 
-export default ChatRoom;
-
+export default Chat;

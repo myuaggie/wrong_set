@@ -35,6 +35,15 @@
         <action name="invalidUser" class="action.UserAction" method="invalidUser">
 
         </action>
+        <action name="addFriend" class="action.UserAction" method="addFriend">
+
+        </action>
+        <action name="getFriends" class="action.UserAction" method="getFriends">
+
+        </action>
+        <action name="isFriend" class="action.UserAction" method="isFriend">
+
+        </action>
 
         <action name="queryUserLibraries" class="action.LibraryAction" method="queryUserLibraries">
 
@@ -80,6 +89,9 @@
 
         </action>
         <action name="queryRecordDetails" class="action.RecordAction" method="queryRecordDetails">
+
+        </action>
+        <action name="searchRecord" class="action.RecordAction" method="searchRecord">
 
         </action>
 

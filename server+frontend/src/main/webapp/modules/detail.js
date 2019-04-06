@@ -2,6 +2,14 @@ import React, { Component }  from 'react'
 import ReactQuill from 'react-quill'
 import {hashHistory} from "react-router";
 
+function getJsonLength(jsonData){
+    var jsonLength = 0;
+    for(var item in jsonData){
+        jsonLength++;
+    }
+    return jsonLength;
+}
+
 var Detail= React.createClass({
     displayName: 'Detail',
     toolbarOptions:[
@@ -36,6 +44,7 @@ var Detail= React.createClass({
             recordData:[],
             refText:null,
             answer:null,
+            searchData:[],
         };
     },
 
@@ -150,9 +159,10 @@ var Detail= React.createClass({
         };
         this.serverRequest16 = $.post('queryRecords',info, function (data) {
             var tem=JSON.parse(data);
-            tem.sort(function(a, b) {
-                return a[0]<b[0];
-            });
+            tem=tem.reverse();
+            // tem=tem.sort(function(a, b) {
+            //     return parseInt(a[0])>parseInt(b[0]);
+            // });
             //this.setState({recordData:temp});
             temp=tem;
             var key;
@@ -189,9 +199,10 @@ var Detail= React.createClass({
         };
         this.serverRequest10 = $.post('queryRecords',info, function (data) {
             var temp=JSON.parse(data);
-            temp.sort(function(a, b) {
-                return a[0]<b[0];
-            });
+            temp=temp.reverse();
+            // temp=temp.sort(function(a, b) {
+            //     return parseInt(a[0])>parseInt(b[0]);
+            // });
             this.setState({record:true,recordData:temp});
         }.bind(this));
     },
@@ -225,6 +236,33 @@ var Detail= React.createClass({
         hashHistory.push({
             pathname: '/wrongset',
         })
+    },
+
+    search: function(e){
+        let el=document.getElementById('input-key').value;
+        let info={
+            libraryId:this.state.detailData[5],
+            answer:el,
+            credentials: 'include',
+        };
+        this.serverRequest21 = $.post('searchRecord',info,function (data) {
+            this.setState({
+                searchData:JSON.parse(data)
+            });
+        }.bind(this));
+    },
+
+    showSearchDetail: function(e){
+        var id=e.target.id;
+        var r=parseInt(id.substring(0,id.indexOf("s")));
+        var d=document.getElementById("searchDetail");
+        d.innerHTML=this.state.searchData[r][2];
+    },
+
+    clear:function(){
+        this.setState({
+            searchData:[]
+        });
     },
 
     renderPopRef: function(){
@@ -296,6 +334,69 @@ var Detail= React.createClass({
         )
     },
 
+    renderSearchTable:function(){
+        if (this.state.searchData) {
+            return (
+                <div>
+                    <p id="#recordbackbtn">Search Result:</p>
+                    <div id="searchDetail"> </div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Rough Content</th>
+                        </tr>
+                        {this.state.searchData.map(function (row, rowidx) {
+                            //if (rowidx===0||rowidx===3||rowidx===4) {
+                                return (
+                                    <tr id={"s" + rowidx.toString()} key={"s" + rowidx.toString()}>{
+                                        row.map(function (cell, idx) {
+                                            return <td onClick={this.showSearchDetail}
+                                                       id={rowidx.toString() + "s" + idx.toString()}
+                                                       key={"s" + idx.toString()}>{cell}</td>;
+                                        }, this)}
+                                    </tr>
+                                );
+                           // }
+                        }, this)}
+                        </tbody>
+                    </table>
+                </div>
+            )
+        }
+        else {
+            return (<p> </p>);
+        }
+    },
+
+    renderRecordTable:function(){
+        return (
+            <div>
+                <p id="#recordbackbtn">All Records:</p>
+                <div id="recordDetail"> </div>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                    </tr>
+                    {this.state.recordData.map(function(row, rowidx) {
+                        return (
+                            <tr id={"r"+rowidx.toString()} key={"r"+rowidx.toString()}>{
+                                row.map(function(cell, idx) {
+                                    return <td onClick={this.showRecordDetail}
+                                               id={rowidx.toString()+"r"+idx.toString()} key={"r"+idx.toString()}>{cell}</td>;
+                                }, this)}
+                            </tr>
+                        );
+                    }, this)}
+                    </tbody>
+                </table>
+            </div>
+        )
+    },
+
     renderDetail: function(){
         if (this.state.record===false){
             return(
@@ -312,27 +413,10 @@ var Detail= React.createClass({
         else{
             return(
                 <div>
-                    <button id="recordbackbtn" onClick={this.hideRecord}>back</button>
-                    <div id="recordDetail"> </div>
-                    <table>
-                        <tbody>
-                        <tr>
-                            <th>#</th>
-                            <th>Date</th>
-                        </tr>
-                        {this.state.recordData.map(function(row, rowidx) {
-                            return (
-                                <tr id={"r"+rowidx.toString()} key={"r"+rowidx.toString()}>{
-                                    row.map(function(cell, idx) {
-                                        return <td onClick={this.showRecordDetail}
-                                                   id={rowidx.toString()+"r"+idx.toString()} key={"r"+idx.toString()}>{cell}</td>;
-                                    }, this)}
-                                </tr>
-                            );
-                        }, this)}
-                        </tbody>
-                    </table>
-
+                    <button id="recordbackbtn" onClick={this.hideRecord}>back</button><br/>
+                    <input type="text" id="input-key"/> <button onClick={this.search}>search</button><button onClick={this.clear}>clear</button><br/>
+                    {this.renderSearchTable()}
+                    {this.renderRecordTable()}
                 </div>
             )
         }
@@ -354,6 +438,6 @@ var Detail= React.createClass({
         }
     }
 
-})
+});
 
 export  default Detail;

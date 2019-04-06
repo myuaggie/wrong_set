@@ -3,6 +3,7 @@ import React  from 'react'
 import CommonSet from './commonTable'
 import BuySet from './buyTable'
 import Detail from'./detail'
+import Friend from './friend'
 import ReactQuill from 'react-quill'
 import { hashHistory } from 'react-router'
 
@@ -67,6 +68,7 @@ var WrongLog=React.createClass(
                 addText:null,
                 buy:false,
                 page:0,
+                social:false,
             };
         },
 
@@ -94,6 +96,7 @@ var WrongLog=React.createClass(
                     self:true,
                     common:false,
                     buy:false,
+                    social:false,
                 });
 
             }.bind(this));
@@ -105,6 +108,7 @@ var WrongLog=React.createClass(
                 self:false,
                 common:true,
                 buy:false,
+                social:false,
             });
 
         },
@@ -115,6 +119,7 @@ var WrongLog=React.createClass(
                 self:false,
                 common:false,
                 buy:true,
+                social:false,
             });
         },
 
@@ -435,6 +440,17 @@ var WrongLog=React.createClass(
             }.bind(this));
         },
 
+        querySocial:function(){
+
+                this.setState({
+                    detail:false,
+                    self:false,
+                    common:false,
+                    buy:false,
+                    social:true,
+                });
+        },
+
         render: function() {
             return (
                 <div>
@@ -584,6 +600,7 @@ var WrongLog=React.createClass(
                         <button onClick={this.queryManQuestion}>Popular Wrong Set</button>
                         <button onClick={this.queryQuestion}>My Wrong Set</button>
                         <button onClick={this.queryBuyQuestion}>Buy Wrong Set</button>
+                        <button onClick={this.querySocial}>Social</button>
                     </div>
                     {this.renderMnplt()}
                     {this.renderLogin()}
@@ -734,6 +751,9 @@ var WrongLog=React.createClass(
                 }
                 else if (this.state.buy){
                     return (<BuySet buyFunc={this.buy} login={this.state.login}/>)
+                }
+                else if (this.state.social){
+                    return (<Friend/>)
                 }
             }
             else{

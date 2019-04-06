@@ -303,7 +303,6 @@ var CommonSet = React.createClass({
                     </tbody>
                 </table>
                 {this._renderPageBtn()}
-                <ChatRoom/>
             </div>
         );
         }

@@ -14,6 +14,7 @@ import CountByUser from "./modules/countByUser"
 import CountFre from "./modules/countFre"
 import CountTags from "./modules/countTags"
 import ManageExternal from "./modules/manageExternalTable";
+import Friend from "./modules/friend";
 render((
     <Router history={hashHistory}>
         <Route path="/" component={App}/>

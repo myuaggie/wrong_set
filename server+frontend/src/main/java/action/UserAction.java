@@ -2,6 +2,7 @@ package action;
 
 import encode.MD5Util;
 import model.User;
+import neo4j.PersonSocial;
 import net.sf.json.JSONArray;
 import service.AppService;
 
@@ -15,14 +16,21 @@ public class UserAction extends BaseAction {
     private static final long serialVersionUID = 1L;
 
     private AppService appService;
+    private PersonSocial personSocial;
+
     private int id;
     private String username;
     private String password;
     private String email;
     private String phone;
 
+
     public void setAppService(AppService appService){
         this.appService=appService;
+    }
+
+    public void setPersonSocial(PersonSocial personSocial) {
+        this.personSocial = personSocial;
     }
 
     public void setId(int id){ this.id=id; }
@@ -184,6 +192,35 @@ public class UserAction extends BaseAction {
         User u=appService.getUserById(id);
         u.setValid(1);
         appService.updateUser(u);
+        return null;
+    }
+
+    public String addFriend() throws Exception{
+        HttpSession session=request().getSession();
+        int myuserid=Integer.parseInt(session.getAttribute("userid").toString());
+        String myusername =session.getAttribute("username").toString();
+        personSocial.createFriendship(myuserid,myusername,id,username);
+        return null;
+    }
+
+    public String getFriends() throws Exception{
+        HttpSession session=request().getSession();
+        PrintWriter out = response().getWriter();
+        out.println(personSocial.getFriendsList(Integer.parseInt(session.getAttribute("userid").toString())));
+        out.flush();
+        out.close();
+        return null;
+    }
+
+    public String isFriend() throws Exception{
+        HttpSession session=request().getSession();
+        PrintWriter out = response().getWriter();
+        if (personSocial.isFriend(Integer.parseInt(session.getAttribute("userid").toString()),id)){
+            out.print("1");
+        }
+        else out.print("0");
+        out.flush();
+        out.close();
         return null;
     }
 }

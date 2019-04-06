@@ -4,6 +4,8 @@ import com.mongodb.*;
 import model.Record;
 import model.URKey;
 import net.sf.json.JSONArray;
+
+import search.SearchAnswer;
 import service.AppService;
 
 import java.io.PrintWriter;
@@ -16,6 +18,7 @@ public class RecordAction extends BaseAction {
     private static final long serialVersionUID = 1L;
 
     private AppService appService;
+    private SearchAnswer searchAnswer;
 
     private int libraryId;
     private int recordId;
@@ -23,6 +26,10 @@ public class RecordAction extends BaseAction {
 
     public void setAppService(AppService appService){
         this.appService=appService;
+    }
+
+    public void setSearchAnswer(SearchAnswer searchAnswer) {
+        this.searchAnswer = searchAnswer;
     }
 
     public int getLibraryId() { return libraryId; }
@@ -73,6 +80,7 @@ public class RecordAction extends BaseAction {
        collection.insert(demo);
        database=null;
        mongoClient.close();
+       searchAnswer.addAnswer(rec,answer);
        return null;
    }
 
@@ -94,6 +102,28 @@ public class RecordAction extends BaseAction {
        if (obj.get("answer")!=null){out.println(obj.get("answer"));}
        database=null;
        mongoClient.close();
+       out.flush();
+       out.close();
+       return null;
+   }
+
+   public String searchRecord() throws Exception{
+       int owner=Integer.parseInt(request().getSession()
+               .getAttribute("userid").toString());
+       PrintWriter out = response().getWriter();
+       out.println(searchAnswer.queryAnswer(owner,libraryId,answer));
+//       List<Answer> answerList=searchAnswer.queryALL(owner);
+//       ArrayList<JSONArray> qJ= new ArrayList<JSONArray>();
+//       Iterator it = answerList.iterator();
+//       while (it.hasNext()) {
+//           Answer a=(Answer)it.next();
+//           ArrayList<String> arrayList = new ArrayList<String>();
+//           arrayList.add(String.valueOf(a.getRecordId()));
+//           arrayList.add(String.valueOf(a.getDate()));
+//           qJ.add(JSONArray.fromObject(arrayList));
+//       }
+//       JSONArray q=JSONArray.fromObject(qJ.toArray());
+//       out.println(q);
        out.flush();
        out.close();
        return null;

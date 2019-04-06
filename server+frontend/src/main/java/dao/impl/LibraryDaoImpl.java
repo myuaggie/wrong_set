@@ -43,7 +43,8 @@ public class LibraryDaoImpl implements LibraryDao {
         sessionFactory.getCurrentSession().merge(library);
     }
 
-    @Transactional(value = "wrongSetTransactionManager", propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED)
+    @Transactional(value = "wrongSetTransactionManager", propagation = Propagation.SUPPORTS,
+            isolation = Isolation.READ_COMMITTED)
     public UQ_Library getLibraryByKey(ULKey key){
         @SuppressWarnings("unchecked")
         Query<UQ_Library> query = sessionFactory.getCurrentSession().createQuery(
@@ -55,9 +56,11 @@ public class LibraryDaoImpl implements LibraryDao {
         return l;
     }
 
-    @Transactional(value = "wrongSetTransactionManager", propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Transactional(value = "wrongSetTransactionManager", propagation = Propagation.REQUIRED,
+            isolation = Isolation.READ_COMMITTED)
     public List<UQ_Library> getAllLibrariesById(int id){
         if (!redisTemplate.hasKey(String.valueOf(id))) {
+            System.out.println("no cache");
             @SuppressWarnings("unchecked")
             Query<UQ_Library> query = sessionFactory.getCurrentSession().createQuery(
                     "from UQ_Library as l where l.ulKey.userId=?",
@@ -68,6 +71,7 @@ public class LibraryDaoImpl implements LibraryDao {
             redisTemplate.expire(String.valueOf(id), 300, TimeUnit.SECONDS);
             return ls;
         }
+        System.out.println("use cache");
         List<Object> s=redisTemplate.opsForList().range(String.valueOf(id),0,-1);
         if (s.size()>0) {
             List<UQ_Library> ls = (List<UQ_Library>) s.get(0);

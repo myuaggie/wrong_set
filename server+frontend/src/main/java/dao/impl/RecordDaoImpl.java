@@ -52,7 +52,7 @@ public class RecordDaoImpl implements RecordDao {
     public List<Record> getAllRecords(int userId, int libraryId){
         @SuppressWarnings("unchecked")
         Query<Record> query=sessionFactory.getCurrentSession().createQuery("from Record as r where r.urKey.userId=? " +
-                        "and r.urKey.libraryId=?",Record.class);
+                        "and r.urKey.libraryId=? ",Record.class);
         query.setParameter(0,userId).setParameter(1,libraryId);
         List<Record> rs = query.getResultList();
         return rs;
