@@ -31,6 +31,9 @@ public class LibraryDaoImpl implements LibraryDao {
     @Transactional(value = "wrongSetTransactionManager",propagation = Propagation.REQUIRES_NEW)
     public void save(UQ_Library library){
         sessionFactory.getCurrentSession().save(library);
+        if (redisTemplate.hasKey(String.valueOf(library.getUlKey().getUserId()))){
+            redisTemplate.delete(String.valueOf(library.getUlKey().getUserId()));
+        }
     }
 
     @Transactional(value = "wrongSetTransactionManager",propagation = Propagation.REQUIRES_NEW)

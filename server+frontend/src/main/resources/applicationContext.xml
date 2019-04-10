@@ -136,4 +136,5 @@
 	</bean>
 
 	<bean id="personSocial" class="neo4j.PersonSocial"/>
+
 </beans>

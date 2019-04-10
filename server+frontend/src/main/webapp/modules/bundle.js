@@ -49471,12 +49471,19 @@
 	    buy: function buy(id) {
 	        console.log("get id:", id);
 
-	        var info = {
-	            id: id,
-	            libraryId: parseInt(this.state.data[this.state.data.length - 1][0]) + 1,
-	            credentials: 'include'
-	        };
-	        this.serverRequest51 = $.post('buyLibrary', info, function (data) {
+	        // let info={
+	        //     id:id,
+	        //     libraryId:parseInt(this.state.data[this.state.data.length - 1][0]) + 1,
+	        //     credentials: 'include',
+	        // };
+	        //   this.serverRequest51 = $.post('buyLibrary',info, function (data) {
+	        //       alert('done');
+	        //   }.bind(this));
+	        var str = '';
+	        str += (parseInt(this.state.data[this.state.data.length - 1][0]) + 1).toString();
+	        str += '/' + id.toString() + '/' + this.state.user[0] + '/' + this.state.user[4];
+	        this.serverRequest51 = $.get('/rest/buy/' + str, {
+	            credentials: 'include' }, function (data) {
 	            alert('done');
 	        }.bind(this));
 	    },
